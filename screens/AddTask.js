@@ -17,6 +17,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
+import firebase from "firebase";
+
 
 let customFonts = {
   "Bubblegum-Sans": require("../assets/fonts/BubblegumSans-Regular.ttf")
@@ -45,20 +47,20 @@ export default class AddTask extends Component {
   }
 
 async addTask(){
-  if(this.state.title && this.state.description && this.state.story && this.state.moral){
+  if(this.state.taskName && this.state.description && this.state.priority && this.state.deadline){
       let taskData={
         priority: this.state.priority,
         taskName: this.state.taskName,
         description: this.state.description,
         deadline: this.state.deadline,
       
-        author: firebase.auth().currentUser.displayName,
+        name: firebase.auth().currentUser.displayName,
         created_on: new Date(),
-        author_uid: firebase.auth().currentUser.uid,
+        user_id: firebase.auth().currentUser.uid,
         NoOf_days: 0
       }
 
-      await firebase.database().ref("/posts/"+Math.random() .toString(36) .slice(2)).set(storyData)
+      await firebase.database().ref("/tasks/"+Math.random() .toString(36) .slice(2)).set(taskData)
       .then(function(snapshot){})
 
       
@@ -249,3 +251,4 @@ const styles = StyleSheet.create({
     padding: RFValue(5)
   }
 });
+
